@@ -2,6 +2,7 @@
     "name": "JATE",
     "version": "1.0.0",
     "description": "",
+    "engines": {"node": "21.x"},
     "main": "server.js",
     "scripts": {
         "server": "nodemon server.js --ignore client"
