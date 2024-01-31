@@ -9,19 +9,22 @@ const initdb = async () =>
         return;
       }
       db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
+      // db.createObjectStore('jate');
       console.log('jate database created');
     },
   });
 
 // TODO: Add logic to a method that accepts some content and adds it to the database
 export const putDb = async (content) => {
-  console.log("Post to jate");
+  if (content !== null) {
+  // console.log("Post to jate",content);
   const jateDb = await openDB("jate",1);
   const tx = jateDb.transaction("jate", 'readwrite');
   const store = tx.objectStore('jate');
-  const request = store.add({ content: content });
+  const request = store.add({content: content});
   const result = await request;
   console.log("Data saved to the db", result);
+}
   // if (err) {console.error('putDb not implemented')};
 }
 
@@ -33,8 +36,17 @@ export const getDb = async () => {
   const store = tx.objectStore('jate');
   const request = store.getAll();
   const result = await request;
+  if (result.length === 0 ) {
+    console.log("nothing in the db");
+    return;
+  }
   console.log("All results", result);
-  return result;
+  if (result.length > 0) {
+    //grab the last element of the array 
+    const lastEl = result[result.length-1]
+    return lastEl.content;
+  }
+  // return result;
 }
 
 initdb();
